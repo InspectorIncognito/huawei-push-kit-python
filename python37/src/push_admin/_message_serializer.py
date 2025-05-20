@@ -15,8 +15,10 @@
 # limitations under the License.
 
 import json
-from src.push_admin import _messages
+
 import six
+
+from python37.src.push_admin import _messages
 
 
 class MessageSerializer(json.JSONEncoder):
