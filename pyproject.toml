@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "huawei_push_kit_python"
+description = ""
+version = "1.0.0"
+authors = ["Huawei"]
+maintainers = ["Nicolás Villalobos"]
+packages = [
+    { include = "python37" },
+    { include = "huawei_push_kit_python" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.7.0"
+requests = "^2.20.1"
+six = "^1.14.0"
+
+[build-system]
+requires = ["poetry>=1.8.3"]
+build-backend = "poetry.masonry.api"
