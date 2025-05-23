@@ -1,7 +1,17 @@
-from python37.src.push_admin._messages import Message
-from python37.src.push_admin.messaging import send_message
+from python37.src.push_admin.messaging import (
+    ApiCallError,
+    Message,
+    TopicSubscribeResponse,
+    send_message,
+    subscribe_topic,
+    unsubscribe_topic,
+)
 
 __all__ = [
+    "ApiCallError",
     "Message",
-    "send_message"
+    "TopicSubscribeResponse",
+    "send_message",
+    "subscribe_topic",
+    "unsubscribe_topic",
 ]
