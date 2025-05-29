@@ -1,5 +1,6 @@
 from python37.src.push_admin import get_app, initialize_app
 from python37.src.push_admin.messaging import (
+    AndroidConfig,
     ApiCallError,
     Message,
     TopicSubscribeResponse,
@@ -17,4 +18,5 @@ __all__ = [
     "unsubscribe_topic",
     "get_app",
     "initialize_app",
+    "AndroidConfig",
 ]
