@@ -83,8 +83,7 @@ class App(object):
             response_body = json.loads(response.text)
 
             self.access_token = response_body.get('access_token')
-            self.token_expired_time = int(round(time.time() * 1000)) + \
-                                          (int(response_body.get('expires_in')) - 5 * 60) * 1000
+            self.token_expired_time = int(round(time.time() * 1000)) + (int(response_body.get('expires_in')) - 5 * 60) * 1000
 
             return True, None
         except Exception as e:
@@ -174,7 +173,6 @@ class ApiCallError(Exception):
         message: A error message string.
         detail: Original low-level exception.
     """
-
     def __init__(self, message, detail=None):
         Exception.__init__(self, message)
         self.detail = detail
