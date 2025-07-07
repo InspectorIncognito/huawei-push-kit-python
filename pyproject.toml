@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "huawei_push_kit_python"
 description = ""
-version = "v1.0.1"
+version = "v1.0.2"
 authors = ["Huawei"]
 maintainers = ["Nicolás Villalobos"]
 packages = [
