@@ -28,12 +28,11 @@ class App(object):
     JSON_ENCODER = _message_serializer.MessageSerializer()
 
     @classmethod
-    def _send_to_server(cls, headers, body, url, verify_peer=False):
+    def _send_to_server(cls, headers, body, url):
         try:
             msg_body = json.dumps(body)
-            response = _http.post(url, msg_body, headers, verify_peer)
-
-            if response.status_code is not 200:
+            response = _http.post(url, msg_body, headers)
+            if response.status_code != 200:
                 raise ApiCallError('http status code is {0} in send.'.format(response.status_code))
 
             # json text to dict
@@ -61,11 +60,8 @@ class App(object):
         self.hw_push_topic_unsub_server = self.push_open_url + "/v1/{0}/topic:unsubscribe"
         self.hw_push_topic_query_server = self.push_open_url + "/v1/{0}/topic:list"
 
-    def _refresh_token(self, verify_peer=False):
+    def _refresh_token(self):
         """refresh access token
-        :param verify_peer: (optional) Either a boolean, in which case it controls whether we verify
-            the server's TLS certificate, or a string, in which case it must be a path
-            to a CA bundle to use. Defaults to ``True``.
         """
         headers = dict()
         headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
@@ -78,9 +74,9 @@ class App(object):
         msg_body = urllib.parse.urlencode(params)
 
         try:
-            response = _http.post(self.token_server, msg_body, headers, verify_peer=verify_peer)
+            response = _http.post(self.token_server, msg_body, headers)
 
-            if response.status_code is not 200:
+            if response.status_code != 200:
                 return False, 'http status code is {0} in get access token'.format(response.status_code)
 
             """ json string to directory """
@@ -100,15 +96,11 @@ class App(object):
             return True
         return int(round(time.time() * 1000)) >= self.token_expired_time
 
-    def _update_token(self, verify_peer=False):
-        """
-        :param verify_peer: (optional) Either a boolean, in which case it controls whether we verify
-            the server's TLS certificate, or a string, in which case it must be a path
-            to a CA bundle to use. Defaults to ``True``.
-        :return:
+    def _update_token(self):
+        """Update the access token if it is expired.
         """
         if self._is_token_expired() is True:
-            result, reason = self._refresh_token(verify_peer)
+            result, reason = self._refresh_token()
             if result is False:
                 raise ApiCallError(reason)
 
@@ -123,22 +115,19 @@ class App(object):
             Sends the given message Huawei Cloud Messaging (HCM)
             :param message: JSON format message
             :param validate_only: validate message format or not
-            :param kwargs:
-                   verify_peer: HTTPS server identity verification, use library 'certifi'
             :return:
                 response dict: response body dict
             :raise:
                 ApiCallError: failure reason
         """
-        verify_peer = kwargs['verify_peer']
-        self._update_token(verify_peer)
+        self._update_token()
         headers = self._create_header()
         url = self.hw_push_server.format(self.appid_push)
         msg_body_dict = dict()
         msg_body_dict['validate_only'] = validate_only
         msg_body_dict['message'] = App.JSON_ENCODER.default(message)
 
-        return App._send_to_server(headers, msg_body_dict, url, verify_peer)
+        return App._send_to_server(headers, msg_body_dict, url)
 
     def subscribe_topic(self, topic, token_list):
         """
