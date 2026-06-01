@@ -10,10 +10,12 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7.0"
-requests = "^2.20.1"
+python = "^3.10"
+requests = "2.33.0"
 six = "^1.14.0"
+pip-audit = "^2.10.0"
+dulwich = "^1.2.4"
 
 [build-system]
-requires = ["poetry>=1.8.3"]
+requires = ["poetry==2.3.4"]
 build-backend = "poetry.masonry.api"
