@@ -13,7 +13,6 @@ packages = [
 python = "^3.10"
 requests = "2.33.0"
 six = "^1.14.0"
-pip-audit = "^2.10.0"
 dulwich = "^1.2.4"
 
 [build-system]
